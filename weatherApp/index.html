@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+    <div class="main">
+        <div class="box">
+            <div class="inp">
+                <input type="text"
+                placeholder="Enter city name">
+                <button><i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+            <div class="box-main">
+                <h1 id="country">New York</h1>
+                <img src="images/clouds.png" alt="weather" class="weather">
+
+
+
+                <h1 id="temp">23°C</h1>
+                <p id="des">Heavy intens rain</p>
+                <div class="two">
+                    <div class="inner">
+                        <div class="hum">
+                            <img src="images/humidity.png" alt="">
+
+                            <h1 id="humidity">90%</h1>
+                        </div>
+                        <p>humidity</p>
+                    </div>
+                    <div class="inner">
+                        <div class="hum">
+                            <img src="images/wind.png" alt="">
+
+                            <h1 id="wind">90 km/h</h1>
+                        </div>
+                        <p>Wind speed</p>
+                    </div>
+
+                </div>
+            </div>
+            <p id="err">city name is invalid</p>
+
+        </div>
+    </div>
+    <script>
+        const checkweather = async(name)=>{
+            const apiid = "a7d760675bfe39912df4d03fd72ed8a0"
+            const apiurl = `https://api.openweathermap.org/data/2.5/weather?q=${name}&units=metric&appid=${apiid}`
+            
+            const res = await fetch(apiurl);
+            const data = await res.json()
+
+            console.log(data)
+            if (data.name === undefined) {
+               const box = document.querySelector(".box-main");
+               box.style.display = "none";
+
+               const para = document.querySelector("#err");
+               para.style.display = "block";
+            } else {
+               const box = document.querySelector(".box-main");
+               box.style.display = "block";
+
+               const para = document.querySelector("#err");
+               para.style.display = "none";
+
+               
+               const img = document.querySelector(".weather");
+
+
+               if (data.weather[0].main === "Clouds") {
+                img.src = "images/clouds.png";
+            } else if (data.weather[0].main === "Clear") {
+                img.src = "images/clear.png";
+            } else if (data.weather[0].main === "Rain") {
+                img.src = "images/rain.png";
+            } else if (data.weather[0].main === "Mist") 
+              img.src = "images/mist.png";
+   
+
+            
+
+
+
+            
+
+
+            document.querySelector("#country").innerHTML = data.name
+
+            document.querySelector("#temp").innerHTML = Math.round (data.main.temp)+"°C"
+
+            document.querySelector("#des").innerHTML = data.weather[0].description
+
+            document.querySelector("#humidity").innerHTML = data.main.humidity + "%";
+
+            document.querySelector("#wind").innerHTML = data.wind.speed+"km/h"}
+
+        }
+
+        document.querySelector(".inp button").addEventListener("click",()=>{
+            const location = document.querySelector(".inp input").value;
+            checkweather(location)
+
+        })
+        
+
+
+
+    </script>
+</body>
+</html>
